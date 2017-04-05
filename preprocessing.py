@@ -19,9 +19,18 @@ class frame:
 #读取音频
 #Reference:
 #https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.wavfile.read.html#scipy.io.wavfile.read
+#http://www.mamicode.com/info-detail-1180317.html
 #freq:采样率，录音设备在一秒钟内对声音信号的采样次数
 #music:原始音频
 freq, music = wavfile.read(r'e:\shutdown.wav')
+if music.dtype.type not in [np.int16, np.int32, np.float32]:
+    raise TypeError('only 16bit,32bit PCM and 32bit floating-point wavefiles are supported')
+#只支持这三种精度的wav文件，注意不支持8bit与24bit
+#对于int16与int32格式的数据，将其归一化
+if music.dtype == 'int16':
+    music = music/(2**15)
+elif music.dtype == 'int32':
+    music = music/(2**31)
 
 #预加重
 #Reference:
