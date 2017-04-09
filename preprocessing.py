@@ -27,7 +27,7 @@ def preprocessing(music, fs, frameTime):
     #    music = music/(2**16)
 
     #预加重
-    b = np.array([1, -0.95])
+    b = np.array([1, -0.97])
     left = lfilter(b, 1, music[:,0])
     right = lfilter(b, 1, music[:,1])
     #left,right:预加重后的左右声道
