@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 ###############################################################
-# Code of this file originates from: scikit.talkbox
-# And is edited to suit this program
+# Code of this file partly originates from: scikit.talkbox
 # Author of scikit.talkbox: cournape
 # Github: https://github.com/cournape/talkbox
+#
+# The original code is edited to suit this program
+# And a new function to compute △MFCC and △△MFCC is added
 ###############################################################
 
 import numpy as np
@@ -42,6 +44,26 @@ def trfbank(fs, nfft, lowfreq, linsc, logsc, nlinfilt, nlogfilt):
         fbank[i][rid] = rslope * (hi - nfreqs[rid])
     return fbank
 
+def delta(ceps):
+    """计算差分"""
+    #时间差取2 差分参数来自当前帧的前两帧和后两帧的线性组合
+    delta = np.zeros(ceps.shape)
+    for k in range(ceps.shape[1]):
+        c = ceps[:,k]
+        tmpdelta = np.zeros(c.shape)
+        for i in range(len(c)):
+            if (i < 2):
+                tmpdelta[i] = c[i+1] - c[i]
+            elif (i > len(c)-3):
+                tmpdelta[i] = c[i] - c[i-1]
+            else:
+                tmpdelta[i] = ((c[i+1]-c[i-1])+2*(c[i+2]-c[i-2]))/(10**0.5)
+                #Reference:http://www.docin.com/p-893673729.html
+        delta[:,k] = tmpdelta
+
+    return delta
+
+
 def mfcc(f, fs, frameLength, nceps=13):
     nfft = frameLength * 2
     lowfreq = 133.33
@@ -67,5 +89,13 @@ def mfcc(f, fs, frameLength, nceps=13):
     # Use the DCT to 'compress' the coefficients (spectrum -> cepstrum domain)
     ceps = dct(mspec, type=2, norm='ortho', axis=-1)[:, 1:nceps]
     # 一般取DCT后的第2个到第13个系数作为MFCC系数
+
+    #计算一阶△MFCC，以反映音频的动态特征
+    deltamfcc = delta(ceps)
+    ceps = np.concatenate((ceps, deltamfcc), axis=1) #将差分mfcc参数扩展到原ceps后
+
+    #继续计算二阶差分△△MFCC
+    deltadeltamfcc = delta(deltamfcc)
+    ceps = np.concatenate((ceps, deltadeltamfcc), axis=1)
     return ceps
 
