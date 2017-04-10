@@ -20,5 +20,6 @@ for i in range(len(insrumentName)):
 clf = svm.SVC(decision_function_shape='ovo')
 clf.fit(ceps, lable)
 pickle.dump(clf,open('model_svm','wb'))
+insrumentName = [name[:-4] for name in insrumentName] #去掉乐器名称的.npy后缀
 pickle.dump(insrumentName,open('names','wb'))
 print("Model has been created.")
