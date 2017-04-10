@@ -1,6 +1,10 @@
 # InstrumentDetection
-Based on: [SciPy](https://www.scipy.org/scipylib/index.html), [NumPy](http://www.numpy.org/), [scikit-learn](http://scikit-learn.org/stable/index.html)<br>
+Based on: [SciPy](https://www.scipy.org/scipylib/index.html), [NumPy](http://www.numpy.org/), [scikit-learn](http://scikit-learn.org/stable/index.html).<br>
 Codes in `mfcc.py` partly originates from [scikits.talkbox](https://github.com/cournape/talkbox).<br>
+Developed on python 3.<br>
+<br>
+The program currently uses MFCC(Mel Frequency Cepstral Coefficents), △MFCC and △△MFCC as the features coefficients.<br>
+SVM is used as the classifier and is trained under the "one-against-one" approach.<br>
 <br>
 Follow these steps to run it:<br>
 1. Convert all the training and testing audios to 16bit/32bit/floating-point `.wav` files. [pydub](http://stackoverflow.com/a/12391451/7708392) may help you convert MP3 to WAV.
