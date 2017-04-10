@@ -5,6 +5,7 @@ import pickle
 from sklearn import svm
 import numpy as np
 
+print("Computing...")
 insrumentName = [name for name in os.listdir(os.getcwd()) if re.match(r'.*npy',name)]
 lable = []
 for i in range(len(insrumentName)):
@@ -20,4 +21,4 @@ clf = svm.SVC(decision_function_shape='ovo')
 clf.fit(ceps, lable)
 pickle.dump(clf,open('model_svm','wb'))
 pickle.dump(insrumentName,open('names','wb'))
-# getback = pickle.load(open('model_svm', 'rb'))
+print("Model has been created.")
