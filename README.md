@@ -33,4 +33,4 @@ Follow these steps to run it:<br>
 ```
 4. Run `generateMFCC.py`. Follow the program's instruction and enter the path of the training audios. You'll get mfcc, △MFCC and △△MFCC saved in `insrument_name.npy` files.
 5. Run `trainmodel_SVM.py`. You'll get the SVM model named `model_svm` and a file named `names` which stores the names of the instruments.
-4. Run `test.py` and the detection results will be shown.<br>
+4. Run `test.py` and enter the path of the testing audios. The detection results will be shown.<br>
